@@ -10,10 +10,12 @@ from PyQt6.QtWidgets import (
     QStackedWidget,
     QApplication,
 )
-from pages.LogPage import LogPage
-from pages.MainConsolePage import MainConsolePage
-from pages.RolePage import RolePage
+from models.LogPage import LogPage
+from models.MainConsolePage import MainConsolePage
+from models.RolePage import RolePage
 from Roles import Witch, Hunter, Idiot, Villager, Wolf, WildChild, Prophet
+from models.Player import Player
+import random
 
 available_boards = [1, 2, 3, 4]
 
@@ -69,7 +71,7 @@ def choose_board(boardNumber: int):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, board_name, roles):
+    def __init__(self, board_name, roles, players):
         super().__init__()
         self.setWindowTitle("狼人杀管理器")
         self.resize(1100, 700)
@@ -79,7 +81,7 @@ class MainWindow(QMainWindow):
         self.status_bar.setStyleSheet("QStatusBar{font-weight:bold;}")
 
         self.role_page = RolePage(roles)
-        self.console_page = MainConsolePage(self.status_bar, board_name)
+        self.console_page = MainConsolePage(self.status_bar, board_name, players)
         self.log_page = LogPage()
 
         self.stack = QStackedWidget()
@@ -109,6 +111,13 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(container)
 
 
+def create_randomized_players(roles):
+    roles_shuffled = roles[:]
+    random.shuffle(roles_shuffled)
+    players = [Player(i + 1, roles_shuffled[i]) for i in range(len(roles_shuffled))]
+    return players
+
+
 if __name__ == "__main__":
     import sys
 
@@ -117,6 +126,7 @@ if __name__ == "__main__":
     if select_dialog.exec() == QDialog.DialogCode.Accepted:
         boardNumber = select_dialog.selected
         board_name, roles = choose_board(boardNumber)
-        window = MainWindow(board_name, roles)
+        players = create_randomized_players(roles)  # 随机分配角色
+        window = MainWindow(board_name, roles, players)
         window.show()
         sys.exit(app.exec())
