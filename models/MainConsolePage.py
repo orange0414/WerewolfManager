@@ -2,7 +2,6 @@ from PyQt6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QLabel,
-    QLineEdit,
     QPushButton,
     QTextEdit,
     QListWidget,
@@ -85,6 +84,20 @@ class MainConsolePage(QWidget):  # <== 注意这里变为 QWidget
         self.clear_log_btn.clicked.connect(self.clear_log)
         log_layout.addWidget(self.clear_log_btn)
 
+        # 发言顺序按钮
+        self.random_speech_order_btn = QPushButton("随机顺序发言")
+        self.random_speech_order_btn.clicked.connect(
+            lambda: self.random_speech_order(reverse=False)
+        )
+        log_layout.addWidget(self.random_speech_order_btn)
+
+        self.random_reverse_order_btn = QPushButton("随机逆序发言")
+        self.random_reverse_order_btn.clicked.connect(
+            lambda: self.random_speech_order(reverse=True)
+        )
+        log_layout.addWidget(self.random_reverse_order_btn)
+
+        # 布局
         layout.addWidget(self.player_table)
         self.player_table.setMinimumWidth(450)
         self.player_table.setMinimumHeight(300)
@@ -133,18 +146,19 @@ class MainConsolePage(QWidget):  # <== 注意这里变为 QWidget
         player.alive = idx == 0
 
     # 更新死亡方式
-    def update_death_type(self, player, combo):
-        player.death_type = combo.currentText() if combo.currentText() else None
+    def update_death_type(self, player, text):
+        player.death_type = text
 
-    # 记录发言顺序
-    def speech_order(self, reverse=False):
-        alive = sorted([p.number for p in self.players if p.alive], reverse=reverse)
-        self.log_edit.append(f"<b>发言顺序：</b>{' '.join(map(str, alive))}")
-
-    # 随机发言顺序
-    def random_speech_order(self):
-        import random
-
+    def random_speech_order(self, reverse=False):
         alive = [p.number for p in self.players if p.alive]
-        random.shuffle(alive)
-        self.log_edit.append(f"<b>随机发言顺序：</b>{' '.join(map(str, alive))}")
+        if not alive:
+            self.log_edit.append("<b>当前没有存活玩家！</b>")
+            return
+        alive.sort(reverse=reverse)
+        start = random.choice(alive)
+        idx = alive.index(start)
+        # 以start为起点循环
+        order = alive[idx:] + alive[:idx]
+        self.log_edit.append(
+            f"<b>随机起点{'（逆序）' if reverse else ''}发言顺序：</b>{' '.join(map(str, order))}（起点：{start}号）"
+        )
