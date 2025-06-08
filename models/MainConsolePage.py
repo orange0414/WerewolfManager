@@ -20,14 +20,11 @@ class MainConsolePage(QWidget):  # <== 注意这里变为 QWidget
         self.players = players
         layout = QHBoxLayout(self)
 
-        # 玩家信息表
-        self.player_table = QTableWidget(len(players), 4)
-        self.player_table.setHorizontalHeaderLabels(
-            ["编号", "角色", "状态", "死亡方式"]
-        )
+        # 玩家信息表（只显示角色、状态、死亡方式/描述）
+        self.player_table = QTableWidget(len(players), 3)
+        self.player_table.setHorizontalHeaderLabels(["角色", "状态", "死亡方式"])
         for i, player in enumerate(self.players):
-            self.player_table.setItem(i, 0, QTableWidgetItem(str(player.number)))
-            self.player_table.setItem(i, 1, QTableWidgetItem(player.role.name))
+            self.player_table.setItem(i, 0, QTableWidgetItem(player.role.name))
             # 状态下拉框
             status_combo = QComboBox()
             status_combo.addItems(["存活", "死亡"])
@@ -35,7 +32,7 @@ class MainConsolePage(QWidget):  # <== 注意这里变为 QWidget
             status_combo.currentIndexChanged.connect(
                 lambda idx, p=player: self.update_player_status(p, idx)
             )
-            self.player_table.setCellWidget(i, 2, status_combo)
+            self.player_table.setCellWidget(i, 1, status_combo)
             from PyQt6.QtWidgets import QLineEdit
 
             # 死亡方式输入框
@@ -47,7 +44,7 @@ class MainConsolePage(QWidget):  # <== 注意这里变为 QWidget
             desc_edit.textChanged.connect(
                 lambda text, p=player: self.update_death_type(p, text)
             )
-            self.player_table.setCellWidget(i, 3, desc_edit)
+            self.player_table.setCellWidget(i, 2, desc_edit)
 
         # 夜间行动
         night_layout = QVBoxLayout()

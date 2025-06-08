@@ -13,11 +13,27 @@ from PyQt6.QtWidgets import (
 from models.LogPage import LogPage
 from models.MainConsolePage import MainConsolePage
 from models.RolePage import RolePage
-from Roles import Witch, Hunter, Idiot, Villager, Wolf, WildChild, Prophet
+from Roles import (
+    Witch,
+    Hunter,
+    Idiot,
+    Villager,
+    Wolf,
+    WildChild,
+    Prophet,
+    MaskWolf,
+    Dancer,
+    Warden,
+    DreamCatcher,
+    GhostBride,
+    Guard,
+    Psyquic,
+    MechanicalWolf,
+)
 from models.Player import Player
 import random
 
-available_boards = [1, 2, 3, 4]
+available_boards = [1, 2, 3, 4, 5]  # 可用的板子编号列表
 
 
 class BoardSelectDialog(QDialog):
@@ -27,7 +43,13 @@ class BoardSelectDialog(QDialog):
         self.selected = None
         layout = QVBoxLayout(self)
         layout.addWidget(QLabel("请选择板子："))
-        names = ["1. 预女猎白混", "2. 假面舞会", "3. 孤注一掷", "4. 鬼魂新娘"]
+        names = [
+            "1. 预女猎白混",
+            "2. 假面舞会",
+            "3. 孤注一掷",
+            "4. 鬼魂新娘",
+            "5. 机械狼通灵师",
+        ]
         for i, name in enumerate(names, 1):
             btn = QPushButton(name)
             btn.clicked.connect(lambda _, x=i: self.select_board(x))
@@ -38,6 +60,7 @@ class BoardSelectDialog(QDialog):
         self.accept()
 
 
+# 选择板子并返回角色列表
 def choose_board(boardNumber: int):
     if boardNumber == 1:
         board_name = "预女猎白混"
@@ -57,16 +80,72 @@ def choose_board(boardNumber: int):
         ]
     elif boardNumber == 2:
         board_name = "假面舞会"
-        roles = []
+        roles = [
+            Prophet(),
+            Witch(),
+            Idiot(),
+            Dancer(),
+            Villager(),
+            Villager(),
+            Villager(),
+            Villager(),
+            MaskWolf(),
+            Wolf(),
+            Wolf(),
+            Wolf(),
+        ]
     elif boardNumber == 3:
         board_name = "孤注一掷"
-        roles = []
+        roles = [
+            Prophet(),
+            Witch(),
+            Hunter(),
+            DreamCatcher(),
+            Villager(),
+            Villager(),
+            Villager(),
+            Villager(),
+            Wolf(),
+            Wolf(),
+            Wolf(),
+            Warden(),
+        ]
     elif boardNumber == 4:
         board_name = "鬼魂新娘"
-        roles = []
+        roles = [
+            Prophet(),
+            Witch(),
+            Hunter(),
+            Guard(),
+            Villager(),
+            Villager(),
+            Villager(),
+            Villager(),
+            Wolf(),
+            Wolf(),
+            Wolf(),
+            GhostBride(),
+        ]
+    elif boardNumber == 5:
+        board_name = "机械狼通灵师"
+        roles = [
+            Psyquic(),
+            Witch(),
+            Hunter(),
+            Guard(),
+            Villager(),
+            Villager(),
+            Villager(),
+            Villager(),
+            MechanicalWolf(),
+            Wolf(),
+            Wolf(),
+            Wolf(),
+        ]
     else:
         board_name = "未知"
         roles = []
+
     return board_name, roles
 
 

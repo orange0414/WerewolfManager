@@ -1,9 +1,6 @@
 from PyQt6.QtWidgets import QScrollArea, QFrame, QVBoxLayout, QLabel, QWidget
 
 
-from PyQt6.QtWidgets import QScrollArea, QFrame, QVBoxLayout, QLabel, QWidget
-
-
 class RolePage(QWidget):
     def __init__(self, roles, parent=None):
         super().__init__(parent)
