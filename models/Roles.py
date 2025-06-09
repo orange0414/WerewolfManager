@@ -86,7 +86,7 @@ class WildChild(Role):
     def __init__(self):
         super().__init__(
             name="混子",
-            group="第三方",
+            group="村民",
             skill_1="选择榜样",
             skill_2=None,
             passive=None,
@@ -113,7 +113,7 @@ class Dancer(Role):
         super().__init__(
             name="舞者",
             group="神职",
-            skill_1="起舞",
+            skill_1="共舞",
             skill_2=None,
             passive="抗毒",
             description="""
@@ -146,7 +146,7 @@ class Warden(Role):
     def __init__(self):
         super().__init__(
             name="典狱长",
-            group="神职",
+            group="狼人",
             skill_1="交易",
             skill_2=None,
             passive=None,
@@ -174,7 +174,7 @@ class DreamCatcher(Role):
                 每晚起身选择一名玩家进行梦游，被梦游的玩家不可得知自己被梦游，技能效果如下：
                 \n1. 若连续两晚梦游同一人，则被梦游玩家出局，女巫无法救活。
                 \n2. 被梦游者免疫夜间技能（狼刀 解药 毒药 均视为技能已使用但落空）
-                \n3. 摄梦人受到的技能效果，梦游者也能受到。如狼刀，猎人开枪，用于摄梦人，则梦游者一同出局。
+                \n3. 摄梦人受到的技能效果，梦游者也能受到。如狼刀，女巫毒药，用于摄梦人，则梦游者一同出局。
                 \n4. 被梦游出局的猎人无法开枪。
                 \n5. 摄梦人无法选择不发动技能。""",
         )
