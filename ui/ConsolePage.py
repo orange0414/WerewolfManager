@@ -13,7 +13,7 @@ from PyQt6.QtWidgets import (
 import random
 
 
-class MainConsolePage(QWidget):  # <== 注意这里变为 QWidget
+class ConsolePage(QWidget):
     def __init__(self, status_bar, board_name, players):
         super().__init__()
         self.status_bar = status_bar
