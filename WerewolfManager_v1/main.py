@@ -67,34 +67,40 @@ def main():
 '''
 def showRoles(roles: list[Role]):
     
-    print("\033[32m" + "\n=========================================================================================")
-    if roles == actualRoles:
-        print("【当前版型角色介绍】" + "\033[0m")
-        
-    elif roles == allRoles:
-        print("【所有版型角色介绍】" + "\033[0m")
+    print("\033[38;2;255;105;180m" + "\n" + "="*89)
+
+    title = "【当前版型角色介绍】" if roles == actualRoles else "【所有版型角色介绍】"
+    print(title + "\033[0m")
     
-    uniqRoles = set(roles)  
-    for role in uniqRoles:
-        print("")
+    # 定义阵营排序权重
+    order = {"神职": 0, "村民": 1, "狼人": 2}
+    
+    # 去重并按阵营顺序排序
+    uniqRoles = set(roles)
+    sorted_roles = sorted(uniqRoles, key=lambda r: order.get(r.team, 99))
+    
+    for role in sorted_roles:
+        print()
         if role.team == "神职":
-            print("\033[38;5;220m" + f"【{role.name}】({role.team})\n" + "\033[0m" +
-                  f"{role.description}")
+            color = "\033[38;5;220m"
         elif role.team == "狼人":
-            print("\033[38;5;196m" + f"【{role.name}】({role.team})\n" + "\033[0m" +
-                  f"{role.description}")
+            color = "\033[38;5;196m"
         elif role.name == "混子" or role.team == "第三方":
-            print("\033[38;5;141m" + f"【{role.name}】({role.team})\n" + "\033[0m" +
-                  f"{role.description}")
+            color = "\033[38;5;141m"
         elif role.team == "村民":
-            print("\033[38;5;94m" + f"【{role.name}】({role.team})\n" + "\033[0m" +
-                  f"{role.description}")
+            color = "\033[38;5;94m"
+        else:
+            color = ""
+        
+        if color:
+            print(f"{color}【{role.name}】({role.team})\n\033[0m{role.description}")
         else:
             print(role.toString())
-    if roles == []:
-        print("\033[32m" + "\n未选择版型" + "033[0m")
-            
-    print("\033[32m" + "\n=========================================================================================" + "\033[0m")
+    
+    if not roles:
+        print("\033[31m" + "\n\t【未选择版型】" + "\033[0m")
+        
+    print("\033[38;2;255;105;180m" + "\n" + "="*89 + "\033[0m")
 
 '''
 --------------------------- Choose Board -----------------------------------
@@ -123,7 +129,9 @@ def chooseBoard():
                     return
                 case 1:
                     pickRoles({"预言家":1, "女巫":1, "猎人":1, "白痴":1, "混子":1, "村民":3, "狼人":4})
-                    print(" 您已选择【预女猎白混】配置:")
+                    print("\033[38;2;255;105;180m" + "="*89 + "\033[0m")
+                    print("\033[32m" + "\t您已选择【预女猎白混】配置" + "\033[0m")
+                    print("\033[38;2;255;105;180m" + "="*89 + "\033[0m")
     
 def pickRoles(rolesToPick:dict[str,int]):
     global actualRoles
@@ -148,8 +156,8 @@ def startGame():
 ------------------------------- Menu --------------------------------------- 
 '''
 def main_menu():
+    print("\033[38;2;255;105;180m" + "="*89 + "\033[0m")
     print("\033[32m" + '''
-=========================================================================================
     【主菜单】
     请选择您要进行的操作: 
     0. 退出
@@ -157,17 +165,17 @@ def main_menu():
     2. 查看所有角色信息
     3. 选择板子
     4. 开始游戏
-=========================================================================================
-''' +"\033[0m")
+    ''' +"\033[0m")
+    print("\033[38;2;255;105;180m" + "="*89 + "\033[0m")
 
 def board_menu():
+    print("\033[38;2;255;105;180m" + "="*89 + "\033[0m")
     print("\033[32m" + '''
-=========================================================================================
     【板子选择】
     0. 返回
     1. 预女猎白混
-=========================================================================================
-''' +"\033[0m")
+    ''' +"\033[0m")
+    print("\033[38;2;255;105;180m"+ "="*89 + "\033[0m")
 
 if __name__ == "__main__":
     main()
